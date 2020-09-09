@@ -13,7 +13,7 @@
 
 # ### Importing the dataset 
 
-# In[235]:
+# In[254]:
 
 
 import pandas as pd
@@ -44,32 +44,32 @@ from sklearn.ensemble import RandomForestClassifier
 import matplotlib as mpl
 
 
-# In[182]:
+# In[255]:
 
 
 df = pd.read_csv("Data-Collisions.csv")
 df.head()
 
 
-# In[183]:
+# In[256]:
 
 
 df.tail()
 
 
-# In[184]:
+# In[257]:
 
 
 df.rename(columns={'X': 'LONGITUDE', 'Y': 'LATITUDE'}, inplace = True)
 
 
-# In[185]:
+# In[258]:
 
 
 df.shape
 
 
-# In[186]:
+# In[259]:
 
 
 df.dtypes
@@ -77,7 +77,7 @@ df.dtypes
 
 # ### Feature extraction
 
-# In[187]:
+# In[260]:
 
 
 #Drop redundant columns, e.g.,
@@ -95,13 +95,13 @@ df.drop(["LOCATION", "SEVERITYCODE.1", "OBJECTID", "INCKEY", "COLDETKEY", "REPOR
 df.head()
 
 
-# In[188]:
+# In[261]:
 
 
 df.shape
 
 
-# In[189]:
+# In[262]:
 
 
 df.isna().sum()
@@ -109,14 +109,14 @@ df.isna().sum()
 
 # ### Dealing with missing values
 
-# In[190]:
+# In[263]:
 
 
 #Weather:
 df['WEATHER'].value_counts()
 
 
-# In[191]:
+# In[264]:
 
 
 #Weather is very important, we can't just randomly give a value for each, so I opt to drop those rows with missing values
@@ -124,7 +124,7 @@ df.dropna(subset = ["WEATHER"], axis = 0, inplace = True)
 df.isna().sum()
 
 
-# In[192]:
+# In[265]:
 
 
 encoding_WEATHER = {"WEATHER": 
@@ -143,21 +143,21 @@ df.replace(encoding_WEATHER, inplace=True)
 df['WEATHER'].value_counts()
 
 
-# In[193]:
+# In[266]:
 
 
 #Speed:
 df['SPEEDING'].value_counts()
 
 
-# In[194]:
+# In[267]:
 
 
 #Replace NaN with mean value
 df['SPEEDING'].replace(np.NaN, "N", inplace=True)
 
 
-# In[195]:
+# In[268]:
 
 
 encoding_SPEEDING = {"SPEEDING": 
@@ -168,20 +168,20 @@ df.replace(encoding_SPEEDING, inplace=True)
 df['SPEEDING'].value_counts()
 
 
-# In[196]:
+# In[269]:
 
 
 #Inattentioned:
 df['INATTENTIONIND'].value_counts()
 
 
-# In[197]:
+# In[270]:
 
 
 df['INATTENTIONIND'].replace(np.NaN, "N", inplace=True)
 
 
-# In[198]:
+# In[271]:
 
 
 encoding_INATTENTIONIND = {"INATTENTIONIND": 
@@ -192,21 +192,21 @@ df.replace(encoding_INATTENTIONIND, inplace=True)
 df['SPEEDING'].value_counts()
 
 
-# In[199]:
+# In[272]:
 
 
 #Light condition:
 df['LIGHTCOND'].value_counts()
 
 
-# In[200]:
+# In[273]:
 
 
 #Replace NaN with "Unknown"
 df['LIGHTCOND'].replace(np.NaN, "Unknown", inplace=True)
 
 
-# In[201]:
+# In[274]:
 
 
 encoding_LIGHTCOND = {"LIGHTCOND": 
@@ -224,21 +224,21 @@ df.replace(encoding_LIGHTCOND, inplace=True)
 df['LIGHTCOND'].value_counts()
 
 
-# In[202]:
+# In[275]:
 
 
 #Road condition:
 df['ROADCOND'].value_counts()
 
 
-# In[203]:
+# In[276]:
 
 
 #Replace NaN with "Unknown"
 df['ROADCOND'].replace(np.NaN, "Unknown", inplace=True)
 
 
-# In[204]:
+# In[277]:
 
 
 encoding_ROADCOND = {"ROADCOND": 
@@ -256,21 +256,21 @@ df.replace(encoding_ROADCOND, inplace=True)
 df['ROADCOND'].value_counts()
 
 
-# In[205]:
+# In[278]:
 
 
 #Junction type:
 df['JUNCTIONTYPE'].value_counts()
 
 
-# In[206]:
+# In[279]:
 
 
 #Replace NaN with "Unknown"
 df['JUNCTIONTYPE'].replace(np.NaN, "Unknown", inplace=True)
 
 
-# In[207]:
+# In[280]:
 
 
 encoding_JUNCTIONTYPE = {"JUNCTIONTYPE": 
@@ -286,7 +286,7 @@ df.replace(encoding_JUNCTIONTYPE, inplace=True)
 df['JUNCTIONTYPE'].value_counts()
 
 
-# In[208]:
+# In[281]:
 
 
 avg_LONGITUDE = df["LONGITUDE"].astype("float").mean(axis=0)
@@ -294,7 +294,7 @@ print("Average of LONGITUDE:", avg_LONGITUDE)
 df['LONGITUDE'].replace(np.NaN, avg_LONGITUDE, inplace=True)
 
 
-# In[209]:
+# In[282]:
 
 
 avg_LATITUDE = df2["LATITUDE"].astype("float").mean(axis=0)
@@ -302,7 +302,7 @@ print("Average of LATITUDE:", avg_LATITUDE)
 df['LATITUDE'].replace(np.NaN, avg_LATITUDE, inplace=True)
 
 
-# In[210]:
+# In[283]:
 
 
 df.isnull().sum()
@@ -310,7 +310,7 @@ df.isnull().sum()
 
 # ### Balancing the dataset
 
-# In[211]:
+# In[284]:
 
 
 df["SEVERITYCODE"].value_counts().plot(kind='pie',shadow=True, startangle=90)
@@ -319,7 +319,7 @@ plt.ylabel('Number of Accidents')
 plt.title('Car Accident Severity (Imbalanced)')
 
 
-# In[212]:
+# In[285]:
 
 
 # Sorting majority and minority
@@ -328,7 +328,7 @@ df_minor = df[df["SEVERITYCODE"] == 2]
 df_major.shape
 
 
-# In[213]:
+# In[286]:
 
 
 #Balancing
@@ -342,13 +342,13 @@ df2 = pd.concat([df_major, df_minor_reform])
 df2.SEVERITYCODE.value_counts()
 
 
-# In[214]:
+# In[287]:
 
 
 df2.head()
 
 
-# In[215]:
+# In[288]:
 
 
 df2.columns
@@ -356,7 +356,7 @@ df2.columns
 
 # ## 3. Exploratory data analysis
 
-# In[216]:
+# In[289]:
 
 
 #Installing Folium Package for mapping
@@ -364,7 +364,7 @@ get_ipython().system('conda install -c conda-forge folium=0.5.0 --yes')
 import folium
 
 
-# In[218]:
+# In[290]:
 
 
 #VISUALIZE 400 DATA POINTS
@@ -373,7 +373,7 @@ df_m1 = df2[["LATITUDE", "LONGITUDE"]]
 df_m2 = df_m1.iloc[0:limit, :]
 
 
-# In[219]:
+# In[291]:
 
 
 # INCIDENTS IN DF
@@ -399,7 +399,7 @@ for lat, lng, in zip(df_m2.LATITUDE, df_m2.LONGITUDE):
 Seattle_map.add_child(incidents)
 
 
-# In[221]:
+# In[292]:
 
 
 # SELECT SEVERITY 2 IN NEW DF
@@ -409,14 +409,14 @@ Sev_2.head()
 
 # ### Weather:
 
-# In[222]:
+# In[293]:
 
 
 Sev_2_w = Sev_2['WEATHER'].value_counts()
 Sev_2_w
 
 
-# In[223]:
+# In[294]:
 
 
 labels = 'Clear', 'Raining', 'Overcast', 'Other'
@@ -431,7 +431,7 @@ plt.show()
 
 # ### Person: 
 
-# In[225]:
+# In[295]:
 
 
 Sev_2_p = Sev_2['PERSONCOUNT'].value_counts()
@@ -447,7 +447,7 @@ plt.show()
 
 # ### Vehicle:
 
-# In[226]:
+# In[296]:
 
 
 Sev_2_v = Sev_2['VEHCOUNT'].value_counts()
@@ -463,7 +463,7 @@ plt.show()
 
 # ### Junction type:
 
-# In[227]:
+# In[297]:
 
 
 Sev_2_j = Sev_2['JUNCTIONTYPE'].value_counts()
@@ -479,7 +479,7 @@ plt.show()
 
 # ### Inattentioned: 
 
-# In[228]:
+# In[298]:
 
 
 Sev_2_i = Sev_2['INATTENTIONIND'].value_counts()
@@ -495,7 +495,7 @@ plt.show()
 
 # ### Road condition: 
 
-# In[229]:
+# In[299]:
 
 
 Sev_2_r = Sev_2['ROADCOND'].value_counts()
@@ -512,7 +512,7 @@ plt.show()
 
 # ### Light condition:
 
-# In[231]:
+# In[300]:
 
 
 Sev_2_l = Sev_2['LIGHTCOND'].value_counts()
@@ -528,7 +528,7 @@ plt.show()
 
 # ### Speed: 
 
-# In[232]:
+# In[301]:
 
 
 Sev_2_s = Sev_2['SPEEDING'].value_counts()
@@ -544,7 +544,7 @@ plt.show()
 
 # ## 4. Model development 
 
-# In[233]:
+# In[302]:
 
 
 #Defining features
@@ -553,14 +553,14 @@ Feature = df2[['LONGITUDE', 'LATITUDE', 'PERSONCOUNT', 'VEHCOUNT',
        'SPEEDING']]
 
 
-# In[234]:
+# In[303]:
 
 
 X = Feature
 y = df2['SEVERITYCODE'].values
 
 
-# In[236]:
+# In[304]:
 
 
 #Standardization
@@ -568,7 +568,7 @@ X= preprocessing.StandardScaler().fit(X).transform(X)
 X[0:5]
 
 
-# In[237]:
+# In[305]:
 
 
 #Train/test split
@@ -579,7 +579,7 @@ print ('Test set:', X_test.shape,  y_test.shape)
 
 # ### KNN
 
-# In[238]:
+# In[306]:
 
 
 #Best k
@@ -601,7 +601,7 @@ for n in range(1,Ks):
 mean_acc
 
 
-# In[239]:
+# In[307]:
 
 
 #Plot accuracy with increasing neighbours k
@@ -614,17 +614,17 @@ plt.tight_layout()
 plt.show()
 
 
-# In[240]:
+# In[308]:
 
 
 print( "Best k =", mean_acc.argmax()+1)
 #Building model with best k == 8
-k=8
+k=1
 kNNeigh= KNeighborsClassifier(n_neighbors = k).fit(X_train,y_train)
 kNNeigh
 
 
-# In[241]:
+# In[309]:
 
 
 #Evaluation
@@ -633,7 +633,7 @@ print("K-Nearest Neighbours Accuray: ", metrics.accuracy_score(y_test, yhat))
 
 # ### Decision tree 
 
-# In[242]:
+# In[310]:
 
 
 #Building model
@@ -641,14 +641,14 @@ DTree = DecisionTreeClassifier(criterion="entropy", max_depth = 4)
 DTree.fit(X_train,y_train)
 
 
-# In[243]:
+# In[311]:
 
 
 #Prediction
 yhat = DTree.predict(X_test)
 
 
-# In[244]:
+# In[312]:
 
 
 #Evaluation
@@ -657,7 +657,7 @@ print("DecisionTrees's Accuracy: ", metrics.accuracy_score(y_test, yhat))
 
 # ### Apply logistic regression 
 
-# In[245]:
+# In[313]:
 
 
 #Buiding model
@@ -665,14 +665,14 @@ LR = LogisticRegression(C=0.01, solver='liblinear').fit(X_train,y_train)
 LR
 
 
-# In[246]:
+# In[314]:
 
 
 #Predition
 yhat = LR.predict(X_test)
 
 
-# In[247]:
+# In[315]:
 
 
 #Evaluation
@@ -681,7 +681,7 @@ print("Logistic Regresion's Accuracy: ", metrics.accuracy_score(y_test, yhat))
 
 # ###  Random forest 
 
-# In[248]:
+# In[316]:
 
 
 #Building model
@@ -689,14 +689,14 @@ clf=RandomForestClassifier(n_estimators=100)
 clf.fit(X_train,y_train)
 
 
-# In[249]:
+# In[317]:
 
 
 #Prediction
 yhat =clf.predict(X_test)
 
 
-# In[250]:
+# In[318]:
 
 
 #Evaluation
@@ -705,7 +705,7 @@ print("Random Forest's Accuracy: ", metrics.accuracy_score(y_test, yhat))
 
 # ## 5. Model evaluation 
 
-# In[253]:
+# In[319]:
 
 
 algo_lst =['K-Nearest Neighbors','Decision Trees','Logistic Regression','Random Forest']
